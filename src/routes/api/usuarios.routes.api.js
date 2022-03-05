@@ -1,17 +1,17 @@
 const express = require('express');
 const Uroute = express.Router();
 
-//& **********   E N C R I P T A D O ***************
-
-const bcrypt = require('bcryptjs')
-
-//& ******* VALIDACION DE INFORMACION ENTRADA  *****
-
-const {check, validationResult} = require('express-validator');
+//& ============   E N C R I P T A D O  ===============
+     const bcrypt = require('bcryptjs')
+//& ======== VALIDACION DE INFORMACION ENTRADA  =======
 
 //^ check comprueba los diferentes datos que se estan ingresando en la ruta trabajada "como un middleware"
+     const {check, validationResult} = require('express-validator');
 
-//& ************************************************
+//& =================   J W T    =====================================
+     const moment = require('moment');  //^ para manejo de fechas
+     const jwt = require('jwt-simple'); 
+//& ==================================================================
 
 const User = require('../../db')
 
@@ -84,26 +84,34 @@ Uroute.post('/login', async (req, res) => {
 
     if(user)
     {
-    
     //~  𝘤𝘰𝘮𝘱𝘢𝘳𝘢𝘮𝘰𝘴 𝘭𝘢 𝘤𝘰𝘯𝘵𝘳𝘢𝘴𝘦ñ𝘢 𝘦𝘤𝘳𝘪𝘱𝘵𝘢𝘥𝘢 𝘥𝘦 𝘭𝘢 𝘣𝘢𝘴𝘦 𝘥𝘦 𝘥𝘢𝘵𝘰𝘴 𝘤𝘰𝘯 𝘭𝘢 𝘥𝘦𝘭 𝘶𝘴𝘶𝘢𝘳𝘪𝘰 𝘪𝘯𝘨𝘳𝘦𝘴𝘢𝘯𝘥𝘰
-    const compararPassword = bcrypt.compareSync(req.body.password, user.password) 
+    const igualPassword = bcrypt.compareSync(req.body.password, user.password) 
 
-    if(compararPassword)
+    if(igualPassword)
     {
+        res.json({ success: createToken(user)}) 
 
-        res.json()
-        
       }else{
-        res.json({error: 'error en usuarios o contraseña'});
+        res.json({error: 'error en usuarios y/o contraseña'});
       }
     }else{
         res.json({error: 'error en usuarios o contraseña'});
     }
-
-
 })
 
-//^ =======================================================
+//^ ==============   ⁡⁢⁣⁣CREACION DEL TOKEN⁡   ==================
+
+const createToken = (user) => {
+
+    const payload = {
+        usuarioId: user.id,
+        createAt: moment().unix(),  // momento captura la fecha del login y unix cnvierte esa fecha a formato unico
+        expiredAt: moment().add(5, 'minutes').unix()  //& expiracion del token 5 minutos
+    }
+
+    return jwt.encode(payload, 'super secret') //^ retorno el token y genero una clave secreta
+
+}
 
 module.exports = Uroute;
 //^ hola a todos comentarios amarillos
