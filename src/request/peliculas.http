@@ -1,0 +1,35 @@
+###
+GET http://localhost:3000/api/peliculas
+
+###
+POST http://localhost:3000/api/peliculas HTTP/1.1
+Content-Type: application/json
+
+{
+    "titulo" : "insidius 3",
+    "descripcion" : " pelicula de miedo",
+    "score" : "mejores vistas",
+    "director" : "marlon esteban"
+}
+
+# {
+#     "titulo" : "la ballena willy",
+#     "descripcion" : " ballena saltarina",
+#     "score" : "vistas",
+#     "director" : "orlando estebaneguer"
+# }
+
+###
+
+PUT  http://localhost:3000/api/peliculas/4 HTTP/1.1
+Content-Type: application/json
+
+{
+    "titulo" : "insidius 3 actualizada",
+    "descripcion" : " pelicula de miedo actualizada",
+    "score" : "mejores vistas",
+    "director" : "marlon esteban"
+}
+
+###
+DELETE  http://localhost:3000/api/peliculas/6 HTTP/1.1 HTTP/1.1

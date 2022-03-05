@@ -1,0 +1,35 @@
+###
+GET http://localhost:3000/api/usuarios
+
+###
+POST http://localhost:3000/api/usuarios HTTP/1.1
+Content-Type: application/json
+
+{
+        "name": "marlon yoel actualizado eliminar ",
+        "lastname": "esteban valencia" ,
+        "email": "marlon@hotmail.com",
+        "password":"marlon123"
+}
+
+# {
+#     "titulo" : "la ballena willy",
+#     "descripcion" : " ballena saltarina",
+#     "score" : "vistas",
+#     "director" : "orlando estebaneguer"
+# }
+
+###
+
+PUT  http://localhost:3000/api/usuarios/4 HTTP/1.1
+Content-Type: application/json
+
+{
+        "name": "ingrid paola ",
+        "lastname": "jimenez robles" ,
+        "email": "ingrid@hotmail.com",
+        "password":"ingrid123"
+}
+
+###
+DELETE  http://localhost:3000/api/usuarios/4 HTTP/1.1 HTTP/1.1
