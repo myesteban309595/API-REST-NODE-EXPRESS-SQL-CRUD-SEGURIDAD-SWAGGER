@@ -1,6 +1,19 @@
 const express = require('express');
 const Uroute = express.Router();
 
+//todo ******* E N C R I P T A D O ***************
+
+const bcrypt = require('bcryptjs')
+
+//todo *** VALIDACION DE INFORMACION ENTRADA  ****
+
+const {check, validationResult} = require('express-validator');
+
+//* check comprueba los diferentes datos que se estan ingresando en la ruta trabajada "como un middleware"
+
+
+//TODO *******************************************
+
 const User = require('../../db')
 
 Uroute.get('/', async (req,res)=>{
@@ -16,10 +29,33 @@ Uroute.get('/', async (req,res)=>{
 
 })
 
-Uroute.post('/', async (req,res) => {
+Uroute.post('/', [
 
+    //! checamos que la informacion se suministre
+
+    check('name', 'nombre obligatorio').not().isEmpty(),
+    check('lastname', 'apellido obligatorio').not().isEmpty(),
+    check('email', 'correo obligatorio').not().isEmpty(),
+    check('password', 'contraseña obligatoria').not().isEmpty()
+
+  ],async (req,res) => {
+
+    //! validationResult capturamos los errores
+
+    const errors = validationResult(req) 
+    
+    if(!errors.isEmpty()) 
+    {
+        return res.status(422).json({errores: errors.array() }) //! con .array convierto en array los errores
+        //todo si hay un error o errores, manda un array con todos los errores en las entradas
+    }
+
+
+
+    req.body.password = bcrypt.hashSync(req.body.password,10)
     const usuario = await User.create(req.body); // llamamos del body la informacion
     res.json('se ha creado un nuevo usuario')
+    //res.json(usuario)
     console.log(('se ha agregado un usuario ').green);
 });
 
