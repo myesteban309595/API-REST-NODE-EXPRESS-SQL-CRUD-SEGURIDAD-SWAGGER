@@ -1,8 +1,8 @@
 
-// va a la base de datos y automaticamente me genera la tabla en la base de datos
+//^ va a la base de datos y automaticamente me genera la tabla en la base de datos
 
 module.exports = (sequelize, type) => {
-    return sequelize.define('pelicula', // nombretablasingular, objeto
+    return sequelize.define('pelicula', //^ nombretablasingular, objeto
     {
         id: {
             type: type.INTEGER,

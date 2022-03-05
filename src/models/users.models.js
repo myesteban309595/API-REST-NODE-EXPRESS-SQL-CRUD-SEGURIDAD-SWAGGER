@@ -11,7 +11,7 @@ module.exports = (sequelize, type) => {
         name: type.STRING,
         lastname: type.STRING,
         email: type.STRING,
-        password: type.STRING(150)  // se define el tamaño de la password grande para encriptarla
+        password: type.STRING(150)  //^ se define el tamaño de la password grande para encriptarla
 
     });
 }

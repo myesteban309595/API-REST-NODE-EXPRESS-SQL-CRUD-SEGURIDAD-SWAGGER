@@ -1,18 +1,17 @@
 const express = require('express');
 const Uroute = express.Router();
 
-//todo ******* E N C R I P T A D O ***************
+//& **********   E N C R I P T A D O ***************
 
 const bcrypt = require('bcryptjs')
 
-//todo *** VALIDACION DE INFORMACION ENTRADA  ****
+//& ******* VALIDACION DE INFORMACION ENTRADA  *****
 
 const {check, validationResult} = require('express-validator');
 
-//* check comprueba los diferentes datos que se estan ingresando en la ruta trabajada "como un middleware"
+//^ check comprueba los diferentes datos que se estan ingresando en la ruta trabajada "como un middleware"
 
-
-//TODO *******************************************
+//& ************************************************
 
 const User = require('../../db')
 
@@ -20,7 +19,7 @@ Uroute.get('/', async (req,res)=>{
 
     res.json("hola desde el get de usuarios.js leido desde api.js")
     
-    // mostramos todas las peliculas guardadas en la base de datos
+    //^ mostramos todas las peliculas guardadas en la base de datos
     
     console.log(("se han obtenido las peliculas").blue);
     const usuarios = await User.findAll()
@@ -31,7 +30,7 @@ Uroute.get('/', async (req,res)=>{
 
 Uroute.post('/', [
 
-    //! checamos que la informacion se suministre
+    //^ checamos que la informacion se suministre
 
     check('name', 'nombre obligatorio').not().isEmpty(),
     check('lastname', 'apellido obligatorio').not().isEmpty(),
@@ -40,20 +39,18 @@ Uroute.post('/', [
 
   ],async (req,res) => {
 
-    //! validationResult capturamos los errores
+    //^ validationResult capturamos los errores
 
     const errors = validationResult(req) 
     
     if(!errors.isEmpty()) 
     {
         return res.status(422).json({errores: errors.array() }) //! con .array convierto en array los errores
-        //todo si hay un error o errores, manda un array con todos los errores en las entradas
+        //& si hay un error o errores, manda un array con todos los errores en las entradas
     }
 
-
-
-    req.body.password = bcrypt.hashSync(req.body.password,10)
-    const usuario = await User.create(req.body); // llamamos del body la informacion
+    req.body.password = bcrypt.hashSync(req.body.password,3)
+    const usuario = await User.create(req.body); //^ llamamos del body la informacion
     res.json('se ha creado un nuevo usuario')
     //res.json(usuario)
     console.log(('se ha agregado un usuario ').green);
@@ -79,4 +76,34 @@ Uroute.delete('/:User', async (req,res) => {
     res.json('se ha eliminado el usuario')
 });
 
+//^ ================== ⁡⁢⁣⁣ L O G I N ⁡ ========================
+
+Uroute.post('/login', async (req, res) => {
+
+    const user = await User.findOne({where: {email: req.body.email}})  //& si existe en la base de datos
+
+    if(user)
+    {
+    
+    //~  𝘤𝘰𝘮𝘱𝘢𝘳𝘢𝘮𝘰𝘴 𝘭𝘢 𝘤𝘰𝘯𝘵𝘳𝘢𝘴𝘦ñ𝘢 𝘦𝘤𝘳𝘪𝘱𝘵𝘢𝘥𝘢 𝘥𝘦 𝘭𝘢 𝘣𝘢𝘴𝘦 𝘥𝘦 𝘥𝘢𝘵𝘰𝘴 𝘤𝘰𝘯 𝘭𝘢 𝘥𝘦𝘭 𝘶𝘴𝘶𝘢𝘳𝘪𝘰 𝘪𝘯𝘨𝘳𝘦𝘴𝘢𝘯𝘥𝘰
+    const compararPassword = bcrypt.compareSync(req.body.password, user.password) 
+
+    if(compararPassword)
+    {
+
+        res.json()
+        
+      }else{
+        res.json({error: 'error en usuarios o contraseña'});
+      }
+    }else{
+        res.json({error: 'error en usuarios o contraseña'});
+    }
+
+
+})
+
+//^ =======================================================
+
 module.exports = Uroute;
+//^ hola a todos comentarios amarillos

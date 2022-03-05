@@ -7,7 +7,7 @@ Proute.get('/', async (req,res)=>{
 
     res.json("hola desde el get de peliculas.js leido desde api.js")
     
-    // mostramos todas las peliculas guardadas en la base de datos
+    //^ mostramos todas las peliculas guardadas en la base de datos
     
     console.log(("se han obtenido las peliculas").blue);
     const peliculas = await PELI.findAll()
@@ -18,7 +18,7 @@ Proute.get('/', async (req,res)=>{
 
 Proute.post('/', async (req,res) => {
 
-    const pelicula = await PELI.create(req.body); // llamamos del body la informacion
+    const pelicula = await PELI.create(req.body); //^ llamamos del body la informacion
     res.json('se ha creado una nueva pelicula')
     console.log(('se ha agregado una pelicula ').green);
 });
