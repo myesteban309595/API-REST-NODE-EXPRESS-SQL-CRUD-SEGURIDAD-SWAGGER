@@ -109,7 +109,7 @@ const createToken = (user) => {
         expiredAt: moment().add(5, 'minutes').unix()  //& expiracion del token 5 minutos
     }
 
-    return jwt.encode(payload, 'super secret') //^ retorno el token y genero una clave secreta
+    return jwt.encode(payload, 'super password') //^ retorno el token y genero una clave secreta
 
 }
 
